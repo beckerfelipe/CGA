@@ -17,7 +17,7 @@ public:
 	Transform transform;
 	glm::mat4 viewMatrix;
 	glm::mat4 projectionMatrix;
-	glm::mat4 viewProjectionMatrix;
+	glm::mat4 projectionViewMatrix;
 
 	Camera(ProjectionType projectionType, float fieldOfView, float aspectRatio, float nearPlane, float farPlane);
 	~Camera();
@@ -35,7 +35,7 @@ private:
 
 	void UpdateProjectionMatrix();
 	void UpdateViewMatrix();
-	void UpdateViewProjectionMatrix();
+	void UpdateProjectionViewMatrix();
 };
 
 #endif // CAMERA_H

@@ -29,7 +29,8 @@ void InputManager::KeyCallback(GLFWwindow* window, int key, int scancode, int ac
 	if(inputManager!=nullptr)
 	{
 		std::cout << "Key: " << key << " Action: " << action << std::endl;
-		inputManager->keys[key] = (State)(action ^ GLFW_PRESS ^ GLFW_RELEASE ^ GLFW_REPEAT);
+		inputManager->keys[key] = (State)(action);
+		std::cout << "Key: " << key << " State: " << inputManager->keys[key] << std::endl;
 	}
 }
 
@@ -48,7 +49,7 @@ void InputManager::MouseButtonCallback(GLFWwindow* window, int button, int actio
 	if (inputManager != nullptr)
 	{
 		std::cout << "Button: " << button << " Action: " << action << std::endl;
-		inputManager->mouseButtons[button] = (State)(action ^ GLFW_PRESS ^ GLFW_RELEASE ^ GLFW_REPEAT);
+		inputManager->mouseButtons[button] = (State)(action);
 	}
 }
 
@@ -59,6 +60,16 @@ void InputManager::ScrollCallback(GLFWwindow* window, double xoffset, double yof
 	{
 		inputManager->mouseScroll = glm::vec2(xoffset, yoffset);
 	}
+}
+
+State InputManager::GetKeyState(int key)
+{
+	return keys[key];
+}
+
+State InputManager::GetMouseButtonState(int button)
+{
+	return mouseButtons[button];
 }
 
 InputManager::~InputManager()

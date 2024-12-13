@@ -28,6 +28,9 @@ public:
 	static void CursorPositionCallback(GLFWwindow* window, double xpos, double ypos);
 	static void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 	static void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
+
+	static State GetKeyState(int key);
+	static State GetMouseButtonState(int button);
 };
 
 #endif // !INPUT_MANAGER_H

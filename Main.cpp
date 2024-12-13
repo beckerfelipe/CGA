@@ -9,96 +9,153 @@
 #include <assimp/postprocess.h>
 #include "Quaternion.h"
 #include "InputManager.h"
-
-const int terrainWidth = 1000, terrainHeight = 800;
-const int maxCircles=100, circleVertices=10;
-
-std::vector<glm::vec2> circles;
+#include "Camera.h"
+#include "MainCamera.h"
+#include "Shader.h"
 
 double PI= glm::pi<double>();
+GLuint VAO, VBO;
 
-struct circle
+void Debug(glm::mat4 m)
 {
-	float radius;
-	glm::vec2 position;
-	glm::vec4 color;
-};
-
-std::vector<glm::vec2> GenerateCircleVertices()
-{
-	std::vector<glm::vec2> vertices(circleVertices);
-	double defaultRadius = 1.0;
-	double angle = 0;
-	for (int i = 0; i < circleVertices; i++)
+	for (int i = 0; i < 4; i++)
 	{
-		vertices[i] = glm::vec2(defaultRadius * cos(angle), defaultRadius * sin(angle));
-		angle += PI / circleVertices;
+		for (int j = 0; j < 4; j++)
+		{
+			std::cout << m[i][j] << " ";
+		}
+		std::cout << "\n";
 	}
-	return vertices;
 }
 
-GLuint circleVAO, circleVBO;
 
-void SetupCircle()
+Shader* shader = nullptr;
+MainCamera* mainCamera = nullptr;
+
+std::vector<GLuint> indices;
+
+void CubeTest()
 {
-	std::vector<glm::vec2> vertices = GenerateCircleVertices();
+    std::vector<glm::vec3> vertices = {
+        glm::vec3(-0.5f, -0.5f, -0.5f),
+        glm::vec3(0.5f, -0.5f, -0.5f),
+        glm::vec3(0.5f, 0.5f, -0.5f),
+        glm::vec3(-0.5f, 0.5f, -0.5f),
+        glm::vec3(-0.5f, -0.5f, 0.5f),
+        glm::vec3(0.5f, -0.5f, 0.5f),
+        glm::vec3(0.5f, 0.5f, 0.5f),
+        glm::vec3(-0.5f, 0.5f, 0.5f)
+    };
 
-	glGenVertexArrays(1, &circleVAO);
-	glBindVertexArray(circleVAO);
+    indices = {
+        0, 1, 2, 2, 3, 0,
+        1, 5, 6, 6, 2, 1,
+        7, 6, 5, 5, 4, 7,
+        4, 0, 3, 3, 7, 4,
+        4, 5, 1, 1, 0, 4,
+        3, 2, 6, 6, 7, 3
+    };
 
-	glGenBuffers(1, &circleVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, circleVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices.data(), GL_STATIC_DRAW);
-		
-	// glVertexAttribPointer(0, )
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), vertices.data(), GL_STATIC_DRAW);
+    glVertexAttribPointer((GLuint)0, 3, GL_FLOAT, GL_FALSE, 0, (GLubyte*)NULL);
+    glEnableVertexAttribArray(0);
+
+
+    GLuint EBO;
+    glGenBuffers(1, &EBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
+
+
+    glBindVertexArray(0);
 }
-
 
 int mainLoop()
 {
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	GLFWwindow* window = glfwCreateWindow(800, 800, "Game", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(800, 800, "Game", NULL, NULL);
 
-	if (window == NULL)
-	{
-		std::cout << "ERRO BRABO\n";
-		glfwTerminate();
-		return -1;
-	}
+    if (window == NULL)
+    {
+        std::cout << "ERRO BRABO\n";
+        glfwTerminate();
+        return -1;
+    }
 
-	glfwMakeContextCurrent(window);
+    glfwMakeContextCurrent(window);
+    gladLoadGL();
 
-	InputManager* inputManager= new InputManager(window);
+    glEnable(GL_DEPTH_TEST);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	gladLoadGL();
-	glViewport(0, 0, 800, 800);
-	glClearColor(0, 0, 0, 1);
-	glClear(GL_COLOR_BUFFER_BIT);
+    InputManager* inputManager = new InputManager(window);
 
-	while (!glfwWindowShouldClose(window))
-	{
-		glfwPollEvents();
+    char shaderName[9] = "CubeTest";
+    char directory[10] = "./Shaders";
+    shader = new Shader(shaderName, directory);
+    CubeTest();
 
-		glfwSwapBuffers(window);
-	}
+    float rotationAngle = 0.0f;
+    float increment = 0.1f;
 
-	glfwDestroyWindow(window);
-	glfwTerminate();
-	return 1;
+    while (!glfwWindowShouldClose(window))
+    {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        if (inputManager->GetKeyState(GLFW_KEY_A) == State::Pressed)
+        {
+            MainCamera::GetMainCamera()->transform.position += glm::vec3(-0.1, 0, 0);
+            MainCamera::GetMainCamera()->Update();
+            std::cout << MainCamera::GetMainCamera()->transform.position.x << " " << MainCamera::GetMainCamera()->transform.position.y << " " << MainCamera::GetMainCamera()->transform.position.z << "\n";
+        }
+        if (inputManager->GetKeyState(GLFW_KEY_D) == State::Pressed)
+        {
+            MainCamera::GetMainCamera()->transform.position += glm::vec3(0.1, 0, 0);
+            MainCamera::GetMainCamera()->Update();
+			std::cout << MainCamera::GetMainCamera()->transform.position.x << " " << MainCamera::GetMainCamera()->transform.position.y << " " << MainCamera::GetMainCamera()->transform.position.z << "\n";
+        }
+
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, (GLubyte*)NULL);
+
+        MainCamera::GetMainCamera()->Update();
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::rotate(model, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+
+        shader->Use();
+        glm::mat4 mvp = MainCamera::GetMainCamera()->projectionViewMatrix * model;
+		char name[4] = "mvp";   
+        shader->SetUniform(name, mvp);
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+
+        rotationAngle += increment;
+    }
+
+    glfwDestroyWindow(window);
+    glfwTerminate();
+    return 1;
 }
+
+
 
 int main()
 {
-	/*Quaternion q(0, 0, 1, 0);	
-	Quaternion p(PI/2, glm::vec3(0, 0, 1));
-	Quaternion p1(PI / 2, glm::vec3(0, 1, 0));
-	p =p * p1;
-	Quaternion r = q.Rotate(p);
-	r.Print();*/
+	Camera* camera= new Camera(ProjectionType::Perspective, PI/4, 1.0f, 0.1f, 100.0f);
+	camera->transform.position = glm::vec3(0, 0, 2);
+	camera->Update();
+	mainCamera = new MainCamera(camera);
+	
 	//Assimp::Importer importer;
 	mainLoop();
 	return 0;
