@@ -173,6 +173,8 @@
   <ItemGroup>
     <None Include="Shaders\CubeTest.frag" />
     <None Include="Shaders\CubeTest.vert" />
+    <None Include="Shaders\ModelLoader.frag" />
+    <None Include="Shaders\ModelLoader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

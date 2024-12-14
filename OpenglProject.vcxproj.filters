@@ -105,5 +105,7 @@
   <ItemGroup>
     <None Include="Shaders\CubeTest.vert" />
     <None Include="Shaders\CubeTest.frag" />
+    <None Include="Shaders\ModelLoader.vert" />
+    <None Include="Shaders\ModelLoader.frag" />
   </ItemGroup>
 </Project>

@@ -13,7 +13,7 @@
 class ModelLoader
 {
 	static std::map<std::string, Texture> loadedTextures;
-	static std::vector<Mesh*> ProcessNode(aiNode* node, const aiScene* scene, std::string directory);
+	static std::vector<Mesh*> ProcessNode(aiNode* node, const aiScene* scene, std::string directory, std::vector<Mesh*>& meshes);
 	static Mesh* ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string directory);
 	static std::vector<Texture> LoadMaterialTexture(aiMaterial* material, aiTextureType type, std::string typeName, std::string directory);
 	static unsigned int ReadTexture(std::string path, std::string directory);

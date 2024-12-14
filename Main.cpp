@@ -122,18 +122,23 @@ int mainLoop()
 
     SetupObjects(float(mode->width)/mode->height);
 
-    char shaderName[9] = "CubeTest";
+    char shaderName[12] = "ModelLoader";
     char directory[10] = "./Shaders";
     shader = new Shader(shaderName, directory);
     CubeTest();
-
+	std::vector<Mesh*> meshes = ModelLoader::LoadModel("./Models/Backpack/backpack.obj");
+	for (int i = 0; i < meshes.size(); i++)
+	{
+		meshes[i]->SetShader(shader);
+	}
+	std::cout << meshes.size() << std::endl;
     float rotationAngle = 0.0f;
     float increment = 0.1f;
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-		camera->Update();
+		//camera->Update();
 
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, (GLubyte*)NULL);
@@ -144,8 +149,8 @@ int mainLoop()
 
         shader->Use();
         glm::mat4 mvp = MainCamera::GetMainCamera()->projectionViewMatrix ;
-		char name[4] = "mvp";   
-        shader->SetUniform(name, mvp);
+		//char name[4] = "mvp";   
+        //shader->SetUniform(name, mvp);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

@@ -6,7 +6,7 @@ std::map<std::string, Texture> ModelLoader::loadedTextures;
 std::vector<Mesh*>  ModelLoader::LoadModel(std::string path)
 {
 	Assimp::Importer importer;
-	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
+	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices | aiProcess_FixInfacingNormals);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
@@ -15,17 +15,21 @@ std::vector<Mesh*>  ModelLoader::LoadModel(std::string path)
 	}
 	
 	std::string directory = path.substr(0, path.find_last_of('/'));
-	 
-	return ProcessNode(scene->mRootNode, scene, directory);
+	std::cout << directory << std::endl;
+	std::vector<Mesh*> meshes;
+	return ProcessNode(scene->mRootNode, scene, directory, meshes);
 }
 
-std::vector<Mesh*>  ModelLoader::ProcessNode(aiNode* node, const aiScene* scene, std::string directory)
+std::vector<Mesh*>  ModelLoader::ProcessNode(aiNode* node, const aiScene* scene, std::string directory, std::vector<Mesh*>& meshes)
 {
-	std::vector<Mesh*> meshes;
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		meshes.push_back(ProcessMesh(mesh, scene, directory));
+	}
+	for (unsigned int i = 0; i < node->mNumChildren; i++)
+	{
+		ProcessNode(node->mChildren[i], scene, directory, meshes);
 	}
 	return meshes;
 }

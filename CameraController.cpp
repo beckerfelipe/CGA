@@ -29,8 +29,6 @@ void CameraController::ProcessMouseMovement(float deltaTime)
 	glm::vec2 mousePosition = InputManager::mousePosition;
 	glm::vec2 mouseDelta = mousePosition - lastMousePosition;
 
-	std::cout << mousePosition.x << " " << mousePosition.y << " "<<lastMousePosition.x<<" "<<lastMousePosition.y<<std::endl;
-
 	yaw += mouseDelta.x * mouseSensitivityX * deltaTime;
 	pitch += mouseDelta.y * mouseSensitivityY * deltaTime;
 
