@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-enum State
+enum InputState
 {
 	Released,
 	Pressed,
@@ -15,8 +15,8 @@ enum State
 class InputManager
 {
 public:
-	static State keys[1024];
-	static State mouseButtons[8];
+	static InputState keys[1024];
+	static InputState mouseButtons[8];
 	static glm::vec2 mousePosition;
 	static glm::vec2 mouseScroll;
 	GLFWwindow* window;
@@ -29,8 +29,8 @@ public:
 	static void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 	static void ScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
 
-	static State GetKeyState(int key);
-	static State GetMouseButtonState(int button);
+	static InputState GetKeyState(int key);
+	static InputState GetMouseButtonState(int button);
 };
 
 #endif // !INPUT_MANAGER_H

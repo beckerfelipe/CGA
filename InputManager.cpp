@@ -1,8 +1,8 @@
 #include "InputManager.h"
 #include <iostream>
 
-State InputManager::keys[1024] = { State::Released };
-State InputManager::mouseButtons[8] = { State::Released };
+InputState InputManager::keys[1024] = { InputState::Released };
+InputState InputManager::mouseButtons[8] = { InputState::Released };
 glm::vec2 InputManager::mousePosition = glm::vec2(0.0f, 0.0f);
 glm::vec2 InputManager::mouseScroll = glm::vec2(0.0f, 0.0f);
 
@@ -29,7 +29,7 @@ void InputManager::KeyCallback(GLFWwindow* window, int key, int scancode, int ac
 	if(inputManager!=nullptr)
 	{
 		std::cout << "Key: " << key << " Action: " << action << std::endl;
-		inputManager->keys[key] = (State)(action);
+		inputManager->keys[key] = (InputState)(action);
 		std::cout << "Key: " << key << " State: " << inputManager->keys[key] << std::endl;
 	}
 }
@@ -49,7 +49,7 @@ void InputManager::MouseButtonCallback(GLFWwindow* window, int button, int actio
 	if (inputManager != nullptr)
 	{
 		std::cout << "Button: " << button << " Action: " << action << std::endl;
-		inputManager->mouseButtons[button] = (State)(action);
+		inputManager->mouseButtons[button] = (InputState)(action);
 	}
 }
 
@@ -62,12 +62,12 @@ void InputManager::ScrollCallback(GLFWwindow* window, double xoffset, double yof
 	}
 }
 
-State InputManager::GetKeyState(int key)
+InputState InputManager::GetKeyState(int key)
 {
 	return keys[key];
 }
 
-State InputManager::GetMouseButtonState(int button)
+InputState InputManager::GetMouseButtonState(int button)
 {
 	return mouseButtons[button];
 }

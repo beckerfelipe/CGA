@@ -139,9 +139,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Assimp.cpp" />
+    <ClCompile Include="Libraries\lib\stb.cpp" />
+    <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="CameraControlelr.cpp" />
+    <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="MainCamera.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -155,7 +156,8 @@
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Assimp.h" />
+    <ClInclude Include="Libraries\include\stb\stb_image.h" />
+    <ClInclude Include="ModelLoader.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="Component.h" />

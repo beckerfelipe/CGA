@@ -13,9 +13,9 @@ protected:
 	//Be careful never to depend on the order of the components
 	std::vector<Component*> components;
 public:
-	// Add a reference to the object that this component is attached to
 	Component();
-	Component(Component* object);
+	// Add a reference to the object that this component is attached to
+	Component(Component* parent);
 	virtual void Start();
 	virtual void Update();
 	virtual void Destroy();

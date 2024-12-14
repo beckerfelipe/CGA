@@ -4,14 +4,13 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
 #include "Quaternion.h"
 #include "InputManager.h"
 #include "Camera.h"
 #include "MainCamera.h"
 #include "Shader.h"
+#include "CameraController.h"
+#include "ModelLoader.h"
 
 double PI= glm::pi<double>();
 GLuint VAO, VBO;
@@ -31,6 +30,7 @@ void Debug(glm::mat4 m)
 
 Shader* shader = nullptr;
 MainCamera* mainCamera = nullptr;
+Camera* camera = nullptr;
 
 std::vector<GLuint> indices;
 
@@ -75,6 +75,15 @@ void CubeTest()
     glBindVertexArray(0);
 }
 
+void SetupObjects(float aspectRation)
+{
+    camera = new Camera(ProjectionType::Perspective, PI / 4, aspectRation, 0.1f, 100.0f);
+    camera->AddComponent(new CameraController(camera));
+    camera->transform.position = glm::vec3(0, 0, 2);
+    mainCamera = new MainCamera(camera);
+    camera->Start();
+}
+
 int mainLoop()
 {
     glfwInit();
@@ -82,7 +91,19 @@ int mainLoop()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* window = glfwCreateWindow(800, 800, "Game", NULL, NULL);
+    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+    if (!monitor) {
+        std::cerr << "Falha ao obter o monitor!" << std::endl;
+        return -1;
+    }
+
+    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+    if (!mode) {
+        std::cerr << "Falha ao obter a resolução do monitor!" << std::endl;
+        return -1;
+    }
+
+    GLFWwindow* window = glfwCreateWindow(mode->width, mode->height, "Game", NULL, NULL);
 
     if (window == NULL)
     {
@@ -99,6 +120,8 @@ int mainLoop()
 
     InputManager* inputManager = new InputManager(window);
 
+    SetupObjects(float(mode->width)/mode->height);
+
     char shaderName[9] = "CubeTest";
     char directory[10] = "./Shaders";
     shader = new Shader(shaderName, directory);
@@ -106,23 +129,11 @@ int mainLoop()
 
     float rotationAngle = 0.0f;
     float increment = 0.1f;
-
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        if (inputManager->GetKeyState(GLFW_KEY_A) == State::Pressed)
-        {
-            MainCamera::GetMainCamera()->transform.position += glm::vec3(-0.1, 0, 0);
-            MainCamera::GetMainCamera()->Update();
-            std::cout << MainCamera::GetMainCamera()->transform.position.x << " " << MainCamera::GetMainCamera()->transform.position.y << " " << MainCamera::GetMainCamera()->transform.position.z << "\n";
-        }
-        if (inputManager->GetKeyState(GLFW_KEY_D) == State::Pressed)
-        {
-            MainCamera::GetMainCamera()->transform.position += glm::vec3(0.1, 0, 0);
-            MainCamera::GetMainCamera()->Update();
-			std::cout << MainCamera::GetMainCamera()->transform.position.x << " " << MainCamera::GetMainCamera()->transform.position.y << " " << MainCamera::GetMainCamera()->transform.position.z << "\n";
-        }
+        
+		camera->Update();
 
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, (GLubyte*)NULL);
@@ -132,7 +143,7 @@ int mainLoop()
         model = glm::rotate(model, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
 
         shader->Use();
-        glm::mat4 mvp = MainCamera::GetMainCamera()->projectionViewMatrix * model;
+        glm::mat4 mvp = MainCamera::GetMainCamera()->projectionViewMatrix ;
 		char name[4] = "mvp";   
         shader->SetUniform(name, mvp);
 
@@ -150,12 +161,7 @@ int mainLoop()
 
 
 int main()
-{
-	Camera* camera= new Camera(ProjectionType::Perspective, PI/4, 1.0f, 0.1f, 100.0f);
-	camera->transform.position = glm::vec3(0, 0, 2);
-	camera->Update();
-	mainCamera = new MainCamera(camera);
-	
+{	
 	//Assimp::Importer importer;
 	mainLoop();
 	return 0;

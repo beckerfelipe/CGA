@@ -27,8 +27,9 @@ class Shader
 {
 	GLuint Id;
 	char* shaderName;
-	static std::map<std::string, ShaderType> shaderExtensions;
 	std::map<std::string, GLuint> uniformLocations;
+	
+	static std::map<std::string, ShaderType> shaderExtensions;
 
 	std::string ReadFile(const char* path);
 	GLuint CompileShader(const char* shaderCode, ShaderType type);

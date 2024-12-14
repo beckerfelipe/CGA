@@ -18,6 +18,7 @@ Camera::Camera(ProjectionType projectionType, float fieldOfView, float aspectRat
 void Camera::AddComponent(Component* component)
 {
 	components.push_back(component);
+	std::cout << "Component added to camera "<<components.size() << std::endl;
 }
 
 void Camera::UpdateViewMatrix()
@@ -47,9 +48,9 @@ void Camera::UpdateProjectionMatrix()
 
 void Camera::Update()
 {
-	for (Component component : components)
+	for (int i = 0; i < components.size(); i++)
 	{
-		component.Update();
+		components[i]->Update();
 	}
 	transform.Update();
 	UpdateViewMatrix();
