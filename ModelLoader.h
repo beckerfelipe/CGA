@@ -17,6 +17,8 @@ class ModelLoader
 	static Mesh* ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string directory);
 	static std::vector<Texture> LoadMaterialTexture(aiMaterial* material, aiTextureType type, std::string typeName, std::string directory);
 	static unsigned int ReadTexture(std::string path, std::string directory);
+	static std::string ResolveTexturePath(std::string modelPath, std::string texturePath);
+
 public:
 	static std::vector<Mesh*> LoadModel(std::string path);
 };

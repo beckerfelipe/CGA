@@ -6,14 +6,8 @@
 #include "Shader.h"
 #include <vector>
 #include <string>
+#include "MainCamera.h"
 
-enum class TextureType
-{
-	Diffuse,
-	Specular,
-	Normal,
-	Height
-};
 
 struct Vertex
 {

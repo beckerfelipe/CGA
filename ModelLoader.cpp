@@ -89,7 +89,10 @@ unsigned int ModelLoader::ReadTexture(std::string path, std::string directory)
 	glGenTextures(1, &textureID);
 
 	int width, height, nrComponents;
+	std::cout << path << std::endl;
+	stbi_set_flip_vertically_on_load(true);
 	unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrComponents, 0);
+
 	
 	if (data)
 	{
@@ -124,6 +127,7 @@ unsigned int ModelLoader::ReadTexture(std::string path, std::string directory)
 		std::cout << "Texture failed to load at path: " << path << std::endl;
 		stbi_image_free(data);
 	}
+	std::cout << "Texture loaded at path: " << path << std::endl;
 	return textureID;
 }
 
@@ -140,7 +144,6 @@ std::vector<Texture> ModelLoader::LoadMaterialTexture(aiMaterial* material, aiTe
 			Texture texture;
 			texture.id = ReadTexture(path, directory);
 			texture.type = typeName;
-			texture.path = path;
 			loadedTextures[path] = texture;
 			textures.push_back(texture);
 		}

@@ -116,7 +116,7 @@ int mainLoop()
     gladLoadGL();
 
     glEnable(GL_DEPTH_TEST);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     InputManager* inputManager = new InputManager(window);
 
@@ -126,7 +126,7 @@ int mainLoop()
     char directory[10] = "./Shaders";
     shader = new Shader(shaderName, directory);
     CubeTest();
-	std::vector<Mesh*> meshes = ModelLoader::LoadModel("./Models/Backpack/backpack.obj");
+	std::vector<Mesh*> meshes = ModelLoader::LoadModel("./Models/Knight/knight.dae");
 	for (int i = 0; i < meshes.size(); i++)
 	{
 		meshes[i]->SetShader(shader);
@@ -138,19 +138,23 @@ int mainLoop()
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-		//camera->Update();
+		for (int i = 0; i < meshes.size(); i++)
+		{
+			meshes[i]->Update();
+		}
+		camera->Update();
 
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, (GLubyte*)NULL);
+        //glBindVertexArray(VAO);
+        //glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, (GLubyte*)NULL);
 
-        MainCamera::GetMainCamera()->Update();
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::rotate(model, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
+  //      MainCamera::GetMainCamera()->Update();
+  //      glm::mat4 model = glm::mat4(1.0f);
+  //      model = glm::rotate(model, glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
 
-        shader->Use();
-        glm::mat4 mvp = MainCamera::GetMainCamera()->projectionViewMatrix ;
-		//char name[4] = "mvp";   
-        //shader->SetUniform(name, mvp);
+        //shader->Use();
+  //      glm::mat4 mvp = MainCamera::GetMainCamera()->projectionViewMatrix ;
+		////char name[4] = "mvp";   
+  //      //shader->SetUniform(name, mvp);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

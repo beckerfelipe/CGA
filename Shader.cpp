@@ -126,6 +126,7 @@ void Shader::CheckCompileErrors(GLuint shader, ShaderType type)
         {
             glGetShaderInfoLog(shader, 512, NULL, infoLog);
             std::cerr << "ERROR::SHADER::" << (type == ShaderType::VERTEX ? "VERTEX" : "FRAGMENT") << "::COMPILATION_FAILED\n" << infoLog << std::endl;
+            exit(1);
         }
     }
     else
@@ -135,8 +136,13 @@ void Shader::CheckCompileErrors(GLuint shader, ShaderType type)
         {
             glGetProgramInfoLog(shader, 512, NULL, infoLog);
             std::cerr << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+            exit(1);
         }
     }
+}
+GLuint Shader::GetUniformLocation(const char* name)
+{
+	return GetUniformLocation((char*)name);
 }
 
 GLuint Shader::GetUniformLocation(char* name)

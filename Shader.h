@@ -35,7 +35,6 @@ class Shader
 	GLuint CompileShader(const char* shaderCode, ShaderType type);
 	void CheckCompileErrors(GLuint shader, ShaderType type);
 	std::vector<std::pair<std::string, ShaderType>> FindShaders(char* directory, char* shaderName);
-	GLuint GetUniformLocation(char* name);
 public:
 	Shader(char* shaderPath, char* directory);
 	~Shader();
@@ -46,6 +45,9 @@ public:
 	void SetUniform(char* name, glm::vec4 value);
 	void SetUniform(char* name, glm::mat4 value);
 	void Use();
+	GLuint GetUniformLocation(char* name);
+	GLuint GetUniformLocation(const char* name);
+
 };
 
 #endif // !SHADER_H
