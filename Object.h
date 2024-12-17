@@ -8,6 +8,12 @@
 //base class for all objects 
 class Object
 {
+//protected :
+//	std::vector<Object*> gameObjects;
+//	void AddGameObjects(Object* gameObject);
+//public:
+//	Object();
+//	~Object();
 };
 
 #endif // !OBJECT_H

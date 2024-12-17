@@ -2,6 +2,7 @@
 
 Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, std::vector<Texture>& textures)
 {
+	assert(indices.size() % 3 == 0);
 	this->vertices = vertices;
 	this->indices = indices;
 	this->textures = textures;

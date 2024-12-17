@@ -78,6 +78,8 @@ Mesh* ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string d
 	std::vector<Texture> heightMaps = LoadMaterialTexture(material, aiTextureType_AMBIENT, "texture_height", directory);
 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
+	std::cout << textures.size() << std::endl;
+
 	return new Mesh(vertices, indices, textures);
 }
 
@@ -134,6 +136,7 @@ unsigned int ModelLoader::ReadTexture(std::string path, std::string directory)
 std::vector<Texture> ModelLoader::LoadMaterialTexture(aiMaterial* material, aiTextureType type, std::string typeName, std::string directory)
 {
 	std::vector<Texture> textures;
+	std::cout << material->GetTextureCount(type) << std::endl;
 	for (unsigned int i = 0; i < material->GetTextureCount(type); i++)
 	{
 		aiString str;

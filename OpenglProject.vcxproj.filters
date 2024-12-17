@@ -60,6 +60,12 @@
     <ClCompile Include="Libraries\lib\stb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="River.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Transform.h">
@@ -101,11 +107,19 @@
     <ClInclude Include="Libraries\include\stb\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="River.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\CubeTest.vert" />
     <None Include="Shaders\CubeTest.frag" />
     <None Include="Shaders\ModelLoader.vert" />
     <None Include="Shaders\ModelLoader.frag" />
+    <None Include="Shaders\Terrain.frag" />
+    <None Include="Shaders\Terrain.vert" />
   </ItemGroup>
 </Project>

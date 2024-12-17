@@ -25,9 +25,11 @@ struct Texture
 
 class Mesh : public Component
 {
+public:
 	std::vector<Vertex> vertices;
 	std::vector<Texture> textures;
 	std::vector<unsigned int> indices;
+private:
 	GLuint VAO, VBO, EBO;
 
 	Shader* shader;
