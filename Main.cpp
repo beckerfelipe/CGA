@@ -43,14 +43,6 @@ int mainLoop()
     InputManager* inputManager = new InputManager(window);
 	Scene* scene = new Scene();
 
-    /*shader = new Shader(shaderName, directory);
-	std::vector<Mesh*> meshes = ModelLoader::LoadModel("./Buildings/HouseB/houseB.dae");
-	for (int i = 0; i < meshes.size(); i++)
-	{
-		meshes[i]->SetShader(shader);
-	}
-	std::cout << meshes.size() << std::endl;*/
-
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -69,7 +61,6 @@ int mainLoop()
 //talvez a camera esteja bugada porque estou renderizando os objetos no 0,0,0
 int main()
 {	
-	//Assimp::Importer importer;
 	mainLoop();
 	return 0;
 }

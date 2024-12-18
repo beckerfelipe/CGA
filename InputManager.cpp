@@ -28,9 +28,8 @@ void InputManager::KeyCallback(GLFWwindow* window, int key, int scancode, int ac
 	InputManager* inputManager = static_cast<InputManager*>(glfwGetWindowUserPointer(window));
 	if(inputManager!=nullptr)
 	{
-		std::cout << "Key: " << key << " Action: " << action << std::endl;
 		inputManager->keys[key] = (InputState)(action);
-		std::cout << "Key: " << key << " State: " << inputManager->keys[key] << std::endl;
+		//std::cout << "Key: " << key << " State: " << inputManager->keys[key] << std::endl;
 	}
 }
 

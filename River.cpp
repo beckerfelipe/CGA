@@ -136,8 +136,10 @@ void River::SetShader(Shader* shader)
 
 void River::Update()
 {
+	Component::Update();
 	for (int i = 0; i < this->riverMesh.size(); i++)
 	{
+		this->riverMesh[i]->UpdateMatrix(worldModelMatrix);
 		this->riverMesh[i]->Update();
 	}
 }

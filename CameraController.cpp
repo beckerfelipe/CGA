@@ -45,9 +45,11 @@ void CameraController::ProcessKeyboard(float deltaTime)
 	forward = glm::normalize(forward);
 	glm::vec3 right = glm::cross(forward, glm::vec3(0, 1, 0));
 	right = glm::normalize(right);
+
+
 	if (InputManager::GetKeyState(GLFW_KEY_W) != InputState::Released)
 	{
-		camera->transform.position += forward * cameraSpeed * deltaTime;
+		camera->transform.position += forward * (cameraSpeed * deltaTime * 5);
 	}
 	if (InputManager::GetKeyState(GLFW_KEY_S) != InputState::Released)
 	{

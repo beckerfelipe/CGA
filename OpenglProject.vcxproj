@@ -139,12 +139,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="KnightController.cpp" />
     <ClCompile Include="Libraries\lib\stb.cpp" />
     <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="MainCamera.cpp" />
+    <ClCompile Include="NavigationMesh.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="InputManager.cpp" />
@@ -158,12 +160,14 @@
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="KnightController.h" />
     <ClInclude Include="Libraries\include\stb\stb_image.h" />
     <ClInclude Include="ModelLoader.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="MainCamera.h" />
+    <ClInclude Include="NavigationMesh.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Mesh.h" />

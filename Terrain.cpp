@@ -18,6 +18,8 @@ unsigned int Terrain::ReadTexture(std::string name)
 	unsigned int textureID;
 	glGenTextures(1, &textureID);
 
+	std::cout << "GEROU TEXTURA COM ID: " << textureID << std::endl;
+
 	int width, height, nrComponents;
 	std::cout << path << std::endl;
 	stbi_set_flip_vertically_on_load(true);
@@ -128,6 +130,16 @@ float Terrain::GetHeight(glm::vec2 xz)
 	return GetHeight(xz.x, xz.y);
 }
 
+bool Terrain::InsideTriangle(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 p)
+{
+	float denominator = (b.z - c.z) * (a.x - c.x) + (c.x - b.x) * (a.z - c.z);
+	float u = ((b.z - c.z) * (p.x - c.x) + (c.x - b.x) * (p.z - c.z)) / denominator;
+	float v = ((c.z - a.z) * (p.x - c.x) + (a.x - c.x) * (p.z - c.z)) / denominator;
+	float w = 1.0f - u - v;
+
+	return (u >= 0.0f && v >= 0.0f && w >= 0.0f);
+}
+
 float Terrain::GetHeight(float x, float z)
 {
 	float y = 0;
@@ -135,18 +147,24 @@ float Terrain::GetHeight(float x, float z)
 	{
 		for (int f = 0; f < terrainMeshes[i]->indices.size(); f += 3)
 		{
-			glm::vec3 v0 = terrainMeshes[i]->vertices[terrainMeshes[i]->indices[f]].position;
-			glm::vec3 v1 = terrainMeshes[i]->vertices[terrainMeshes[i]->indices[f + 1]].position;
-			glm::vec3 v2 = terrainMeshes[i]->vertices[terrainMeshes[i]->indices[f + 2]].position;
-			/*glm::vec3 normal = glm::cross(v1 - v0, v2 - v0);
-			normal = glm::normalize(normal);
-			float d = -glm::dot(normal, v0);
-			std::cout << "CHECK HEIGHt\n";
-			y = (-normal.x * x - normal.z * z - d) / normal.y;
-			if (y >= 0)
+			glm::vec4 v0 = worldModelMatrix*glm::vec4(terrainMeshes[i]->vertices[terrainMeshes[i]->indices[f]].position,1.0);
+			glm::vec4 v1 = worldModelMatrix*glm::vec4(terrainMeshes[i]->vertices[terrainMeshes[i]->indices[f + 1]].position,1.0);
+			glm::vec4 v2 = worldModelMatrix*glm::vec4(terrainMeshes[i]->vertices[terrainMeshes[i]->indices[f + 2]].position,1.0);
+
+			if (!InsideTriangle(glm::vec3(v0), glm::vec3(v1), glm::vec3(v2), glm::vec3(x, 0, z)))
 			{
-				return y;
-			}*/
+				continue;
+			}
+			
+			glm::vec3 e1 = v1 - v0;
+			glm::vec3 e2 = v2 - v0;
+
+			glm::vec3 normal = glm::cross(e1, e2);
+
+			float d = glm::dot(normal, glm::vec3(v0));
+
+			y = (d - normal.x * x - normal.z * z) / normal.y;
+
 			return y;
 		}
 	}
@@ -163,8 +181,11 @@ void Terrain::SetShader(Shader* shader)
 
 void Terrain::Update()
 {
+	Component::Update();
 	for (int i = 0; i < this->terrainMeshes.size(); i++)
 	{
+		this->terrainMeshes[i]->UpdateMatrix(worldModelMatrix);
 		this->terrainMeshes[i]->Update();
 	}
+
 }

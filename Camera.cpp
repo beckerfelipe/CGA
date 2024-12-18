@@ -22,7 +22,7 @@ void Camera::AddComponent(Component* component)
 }
 
 void Camera::UpdateViewMatrix()
-{
+{	
 	Quaternion forward = Quaternion(transform.rotation.x, glm::vec3(1, 0, 0));
 	Quaternion up = Quaternion(transform.rotation.y, glm::vec3(0, 1, 0));
 	Quaternion right = Quaternion(transform.rotation.z, glm::vec3(0, 0, 1));

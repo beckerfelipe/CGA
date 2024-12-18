@@ -6,8 +6,15 @@ Mesh::Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, st
 	this->vertices = vertices;
 	this->indices = indices;
 	this->textures = textures;
-	std::cout << "Create mesh with " << vertices.size() << " vertices and " << indices.size() << " indices" << std::endl;
+	//std::cout << "Create mesh with " << vertices.size() << " vertices and " << indices.size() << " indices" << std::endl;
 	SetupMesh();
+}
+
+
+//terrain calls this function
+void Mesh::UpdateMatrix(glm::mat4 parentWorldMatrix)
+{
+	Component::UpdateMatrix(parentWorldMatrix);
 }
 
 void Mesh::SetupMesh()
@@ -46,13 +53,12 @@ void Mesh::SetShader(Shader* shader)
 
 void Mesh::Update()
 {
+	Component::Update();
 	shader->Use();
-	shader->SetUniform((char*)"mvp", MainCamera::GetMainCamera()->projectionViewMatrix * glm::scale(glm::mat4(1.0f), glm::vec3(0.01f, 0.01f, 0.01f)));
 
-	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
+	glm::mat4 model = worldModelMatrix;
+
+	shader->SetUniform((char*)"mvp", MainCamera::GetMainCamera()->projectionViewMatrix * model);
 
 	unsigned int diffuseNr = 1;
 	unsigned int specularNr = 1;
@@ -73,9 +79,11 @@ void Mesh::Update()
 		GLuint textureLocation = shader->GetUniformLocation((name+number).c_str());
 
 		glUniform1i(textureLocation, i);
-
+		//std::cout << "BIND TEXTURE " << textures[i].id << " TO " << textureLocation << std::endl;
 		glBindTexture(GL_TEXTURE_2D, textures[i].id);
 	}
-
+	glBindVertexArray(VAO);
+	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
 	glActiveTexture(GL_TEXTURE0);
 }

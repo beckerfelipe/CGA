@@ -78,7 +78,7 @@ Mesh* ModelLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::string d
 	std::vector<Texture> heightMaps = LoadMaterialTexture(material, aiTextureType_AMBIENT, "texture_height", directory);
 	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
-	std::cout << textures.size() << std::endl;
+	std::cout << "CARREGOU " << textures.size() << " TEXTURAS" << std::endl;
 
 	return new Mesh(vertices, indices, textures);
 }
@@ -89,6 +89,7 @@ unsigned int ModelLoader::ReadTexture(std::string path, std::string directory)
 
 	unsigned int textureID;
 	glGenTextures(1, &textureID);
+	std::cout << "GEROU TEXTURA COM ID: " << textureID << std::endl;
 
 	int width, height, nrComponents;
 	std::cout << path << std::endl;
@@ -136,7 +137,6 @@ unsigned int ModelLoader::ReadTexture(std::string path, std::string directory)
 std::vector<Texture> ModelLoader::LoadMaterialTexture(aiMaterial* material, aiTextureType type, std::string typeName, std::string directory)
 {
 	std::vector<Texture> textures;
-	std::cout << material->GetTextureCount(type) << std::endl;
 	for (unsigned int i = 0; i < material->GetTextureCount(type); i++)
 	{
 		aiString str;

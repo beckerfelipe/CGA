@@ -7,7 +7,7 @@
 #include <vector>
 #include <string>
 #include "MainCamera.h"
-
+#include "Transform.h"
 
 struct Vertex
 {
@@ -40,6 +40,7 @@ public:
 	Mesh(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices, std::vector<Texture>& texture);
 	void SetShader(Shader* shader);
 	void Update();
+	void UpdateMatrix(glm::mat4 parentWorldMatrix);
 };
 
 #endif // !MESH_H

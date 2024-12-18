@@ -15,6 +15,7 @@ class Terrain : public Component
 	 void TerrainLoader(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices);
 	 void LoadTexture(std::vector<Texture>& textures);
 	 unsigned int ReadTexture(std::string name);
+	 bool InsideTriangle(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 p);
 
 
 public:

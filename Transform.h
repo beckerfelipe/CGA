@@ -1,10 +1,11 @@
 #ifndef TRANSFORM_H
 #define TRANSFORM_H
 
-#include "Component.h"
 #include "Quaternion.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
-class Transform : public Component
+class Transform
 {
 public:
 	glm::vec3 position;
