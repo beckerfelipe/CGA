@@ -12,7 +12,7 @@ uniform sampler2D texture_normal1;     // Textura Normal
 uniform vec3 lightPos;                 // Posição da luz no espaço do mundo
 uniform vec3 cameraPos;                  // Posição da câmera no espaço do mundo
 uniform vec3 lightColor = vec3(1.0,1.0,1.0);
-uniform float time;
+uniform float currentTime;
 
 void main()
 {

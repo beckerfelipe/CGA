@@ -12,11 +12,11 @@ uniform sampler2D texture_normal1;
 uniform vec3 lightPos;                 
 uniform vec3 cameraPos;               
 uniform vec3 lightColor = vec3(1.0,1.0,1.0);
-uniform float time;                   
+uniform float currentTime;                   
 
 void main()
 {
-    vec2 movingTexCoord = TexCoord + vec2(sin(time * 0.5) * 0.5, cos(time * 0.5) * 0.5);
+    vec2 movingTexCoord = TexCoord + vec2(sin(currentTime * 0.5) * 0.5, cos(currentTime * 0.5) * 0.5);
     
     vec4 diffuseColor = texture(texture_diffuse1, TexCoord);
     vec4 specularColor = texture(texture_specular1, TexCoord);

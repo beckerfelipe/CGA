@@ -15,20 +15,32 @@
 #include "NavigationMesh.h"
 #include "KnightController.h"	
 #include "Light.h"
-
+#include "Player.h"
+#include <set>
+#include "Cube.h"
 extern double PI;
 
 class Scene
 {
 	std::vector<Component*> gameObjects;
+	std::multiset<Component*> secretHouse;
+
 	//Terrain reference stored in gameObjects
 	Terrain* terrain;
 	Component* knight;
 	Camera* camera;
-
+	Camera* secundaryCamera;
+	Player* player;
+	River* river;
 	NavigationMesh* navigationMesh;
+	Cube* cube;
 
 	float terrainScale = 2.0f;
+	float maxDistanceCulling = 200.0f;
+	float lastFrameTime = 0.0f;
+	float accumulator = 0.0f;
+	bool ok = 0;
+	int FPS = 60;
 
 	void AddGameObjects();
 	float GetAspectRation();

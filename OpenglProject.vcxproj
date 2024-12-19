@@ -139,6 +139,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Cube.h" />
     <ClCompile Include="KnightController.cpp" />
     <ClCompile Include="Libraries\lib\stb.cpp" />
     <ClCompile Include="ModelLoader.cpp" />
@@ -185,8 +187,10 @@
     <ClInclude Include="WaterEffect.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\CubeTest.frag" />
-    <None Include="Shaders\CubeTest.vert" />
+    <None Include="Shaders\Cube.frag" />
+    <None Include="Shaders\Cube.vert" />
+    <None Include="Shaders\Tree.frag" />
+    <None Include="Shaders\Tree.vert" />
     <None Include="Shaders\House.frag" />
     <None Include="Shaders\House.vert" />
     <None Include="Shaders\ModelLoader.frag" />

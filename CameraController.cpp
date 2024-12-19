@@ -11,7 +11,7 @@ CameraController::CameraController(Component* parent) : Component(parent)
 
 void CameraController::Update()
 {
-	glm::vec3 p = camera->transform.position;
+	glm::vec3 p = camera->GetPosition();
     float currentFrame = glfwGetTime();
     float deltaTime = currentFrame - timeLastFrame;
     timeLastFrame = currentFrame;
@@ -47,30 +47,32 @@ void CameraController::ProcessMouseMovement(float deltaTime)
 void CameraController::ProcessKeyboard(float deltaTime)
 {
     // Movimenta a câmera com base nas teclas pressionadas.
+	glm::vec3 cameraPosition = camera->GetPosition();
     if (InputManager::GetKeyState(GLFW_KEY_W) != InputState::Released)
     {
-        camera->transform.position += camera->forward * cameraSpeed * deltaTime;
+        cameraPosition += camera->forward * cameraSpeed * deltaTime;
     }
     if (InputManager::GetKeyState(GLFW_KEY_S) != InputState::Released)
     {
-        camera->transform.position -= camera->forward * cameraSpeed * deltaTime;
+        cameraPosition -= camera->forward * cameraSpeed * deltaTime;
     }
     if (InputManager::GetKeyState(GLFW_KEY_A) != InputState::Released)
     {
-        camera->transform.position -= camera->right * cameraSpeed * deltaTime;
+        cameraPosition -= camera->right * cameraSpeed * deltaTime;
     }
     if (InputManager::GetKeyState(GLFW_KEY_D) != InputState::Released)
     {
-        camera->transform.position += camera->right * cameraSpeed * deltaTime;
+        cameraPosition += camera->right * cameraSpeed * deltaTime;
     }
     if (InputManager::GetKeyState(GLFW_KEY_Q) != InputState::Released)
     {
-        camera->transform.position += worldUp * cameraSpeed * deltaTime;
+        cameraPosition += worldUp * cameraSpeed * deltaTime;
     }
     if (InputManager::GetKeyState(GLFW_KEY_E) != InputState::Released)
     {
-        camera->transform.position -= worldUp * cameraSpeed * deltaTime;
+        cameraPosition -= worldUp * cameraSpeed * deltaTime;
     }
+	camera->SetPosition(cameraPosition);
 }
 
 

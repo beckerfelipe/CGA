@@ -14,7 +14,6 @@ enum class ProjectionType
 class Camera : public Component
 {
 public:
-	Transform transform;
 	glm::mat4 viewMatrix;
 	glm::mat4 projectionMatrix;
 	glm::mat4 projectionViewMatrix;

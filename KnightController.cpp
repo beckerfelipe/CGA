@@ -1,11 +1,13 @@
 #include "KnightController.h"
 
-KnightController::KnightController(Component* parent, Terrain* terrain, NavigationMesh* navigationMesh) : Component(parent)
+KnightController::KnightController(Component* parent, Terrain* terrain, NavigationMesh* navigationMesh, Player* player, Camera* deathCamera) : Component(parent)
 {
 	timeLastFrame = glfwGetTime();
 	this->knight = parent;
 	this->terrain = terrain;
 	this->navigationMesh = navigationMesh;
+	this->player = player;
+	this->deathCamera = deathCamera;
 	currentNode = 20;
 	nextNode = 17;
 	knight->SetPosition(navigationMesh->nodePosition[currentNode]);
@@ -14,6 +16,16 @@ KnightController::KnightController(Component* parent, Terrain* terrain, Navigati
 void KnightController::Update()
 {
 	ApplyMovement();
+	if (glm::distance(knight->GetPosition(), player->GetPosition()) < 3)
+	{
+		MainCamera::SetMainCamera(deathCamera);
+	}
+}
+
+glm::vec3 KnightController::Seek(glm::vec3 target)
+{
+	glm::vec3 desiredVelocity = glm::normalize(target - knight->GetPosition()) * speed;
+	return desiredVelocity - velocity;
 }
 
 void KnightController::ApplyMovement()
@@ -40,16 +52,8 @@ void KnightController::ApplyMovement()
 	knightPosition.y = terrain->GetHeight(knightPosition.x, knightPosition.z);
 	knight->SetPosition(knightPosition);
 
-	glm::vec3 rotation = knight->GetRotation();
+	float angle = atan2(direction.x, direction.z);
 
-	float angle = glm::acos(glm::dot(glm::vec3(0, 1, 0), direction));
-
-	glm::vec3 crossProduct = glm::cross(glm::vec3(0, 1, 0), direction);
-
-	if (crossProduct.y < 0) {
-		angle = -angle;
-	}
-
-	rotation.y = angle;
-	knight->SetRotation(rotation);
+	// Aplica a rotação ao cavaleiro
+	knight->SetRotation(glm::vec3(0.0f, angle, 0.0f));
 }

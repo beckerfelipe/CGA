@@ -38,7 +38,7 @@ int mainLoop()
 
     gladLoadGL();
     glEnable(GL_DEPTH_TEST);
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
     InputManager* inputManager = new InputManager(window);
 	Scene* scene = new Scene();
@@ -59,7 +59,6 @@ int mainLoop()
     return 1;
 }
 
-//talvez a camera esteja bugada porque estou renderizando os objetos no 0,0,0
 int main()
 {
 	mainLoop();

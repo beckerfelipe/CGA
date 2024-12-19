@@ -61,7 +61,7 @@ void Mesh::Update()
 	shader->SetUniform((char*)"model", model);
 	shader->SetUniform((char*)"cameraPos", MainCamera::GetMainCamera()->GetPosition());
 	shader->SetUniform((char*)"lightPos", Light::position);
-	shader->SetUniform((char*)"time", (float)glfwGetTime());
+	shader->SetUniform((char*)"currentTime", (float)glfwGetTime());
 
 	unsigned int diffuseNr = 1;
 	unsigned int specularNr = 1;

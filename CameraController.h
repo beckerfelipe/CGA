@@ -13,9 +13,9 @@ class CameraController : public Component
 	//The camera reference that will be used to modify the camera transform
 	Camera* camera;
 
-	float cameraSpeed = 50.0f;
+	float cameraSpeed = 10.0f;
 	float mouseSensitivityX = 10.0f;
-	float mouseSensitivityY = 5.0f;
+	float mouseSensitivityY = 10.0f;
 	float timeLastFrame = 0.0f;
 
 	float pitch = 0.0f;

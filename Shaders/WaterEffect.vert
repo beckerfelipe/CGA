@@ -13,7 +13,7 @@ uniform mat4 projectionView;
 
 uniform vec3 lightPos;
 uniform vec3 cameraPos;
-uniform float time;
+uniform float currentTime;
 
 void main()
 {

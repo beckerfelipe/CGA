@@ -81,6 +81,12 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Cube.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Transform.h">
@@ -145,8 +151,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\CubeTest.vert" />
-    <None Include="Shaders\CubeTest.frag" />
+    <None Include="Shaders\Tree.vert" />
+    <None Include="Shaders\Tree.frag" />
     <None Include="Shaders\ModelLoader.vert" />
     <None Include="Shaders\ModelLoader.frag" />
     <None Include="Shaders\Terrain.frag" />
@@ -155,5 +161,7 @@
     <None Include="Shaders\WaterEffect.vert" />
     <None Include="Shaders\House.frag" />
     <None Include="Shaders\House.vert" />
+    <None Include="Shaders\Cube.vert" />
+    <None Include="Shaders\Cube.frag" />
   </ItemGroup>
 </Project>

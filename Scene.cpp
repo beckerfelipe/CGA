@@ -5,15 +5,39 @@ static double PI= glm::pi<double>();
 Scene::Scene()
 {
 	Light();
-	AddGameObjects();
+	AddGameObjects();	
+	lastFrameTime = glfwGetTime();
 }
-
 
 void Scene::Render()
 {
 	for (int i = 0; i < gameObjects.size(); i++)
 	{
-		gameObjects[i]->Update();
+		if (glm::distance(player->GetPosition(), gameObjects[i]->GetPosition()) < maxDistanceCulling)
+		{
+			gameObjects[i]->Update();
+		}
+	}
+	river->Update();
+	terrain->Update();
+	player->Update();
+	knight->Update();
+	//cube->Update();
+
+	if (MainCamera::GetMainCamera()==secundaryCamera)
+	{
+		secundaryCamera->Update();
+		glm::vec3 position = secundaryCamera->GetPosition();
+	}
+
+	if (InputManager::GetKeyState(GLFW_KEY_2) == InputState::Pressed)
+	{
+		MainCamera::SetMainCamera(secundaryCamera);
+	}
+
+	if (InputManager::GetKeyState(GLFW_KEY_1) == InputState::Pressed)
+	{
+		MainCamera::SetMainCamera(camera);
 	}
 }
 
@@ -43,15 +67,12 @@ void Scene::AddGameObjects()
     terrain->SetShader(s1);
 	terrain->SetScale(glm::vec3(terrainScale, terrainScale, terrainScale));
 
-	gameObjects.push_back(terrain);
-
 	navigationMesh = new NavigationMesh("./TerrainData/NavigationMesh.txt", terrain, terrainScale);
 
-    River* river = new River();
+    river = new River();
 	river->SetScale(glm::vec3(terrainScale, terrainScale, terrainScale));
     Shader* s2 = new Shader((char*)"WaterEffect", directory);
     river->SetShader(s2);
-	gameObjects.push_back(river);
 
 	LoadHouses();
 
@@ -65,14 +86,23 @@ void Scene::AddGameObjects()
 		std::cerr << "Falha ao obter a resolução do monitor!" << std::endl;
 		exit(1);
 	}
-	camera = new Camera(ProjectionType::Perspective, PI / 4, aspectRation, 0.1f, 50.0f);
+	camera = new Camera(ProjectionType::Perspective, PI / 4, aspectRation, 0.1f, 1000.0f);
 	camera->AddComponent(new CameraController(camera));
-	camera->transform.position = glm::vec3(0, terrain->GetHeight(100,100)+10, 20);
-	std::cout << "camera position: " << camera->transform.position.x << " " << camera->transform.position.y << " " << camera->transform.position.z << std::endl;
 	MainCamera* mainCamera = new MainCamera(camera);
 
-	gameObjects.push_back(camera);
+	secundaryCamera = new Camera(ProjectionType::Perspective, PI / 4, aspectRation, 0.1f, 1000.0f);
+	secundaryCamera->AddComponent(new CameraController(secundaryCamera));
+	secundaryCamera->SetPosition(glm::vec3(0, terrain->GetHeight(0,100)+10, 100));
 
+	int idx = rand() % navigationMesh->nodePosition.size();
+
+	//Cube* cube = new Cube(navigationMesh->nodePosition[idx]);
+	//cube->shader = new Shader((char*)"Cube", (char*)"./Shaders");
+
+	player = new Player(terrain, knight);
+
+	Component* knightController = new KnightController(knight, terrain, navigationMesh, player, secundaryCamera);
+	knight->AddComponent(knightController);
 }
 
 void Scene::LoadKnight()
@@ -87,10 +117,6 @@ void Scene::LoadKnight()
 	}
 	knight->SetScale(glm::vec3(0.01, 0.01, 0.01));
 	knight->SetPosition(glm::vec3(0, terrain->GetHeight(0, -100), -100));
-	gameObjects.push_back(knight);
-
-	Component* knightController = new KnightController(knight, terrain, navigationMesh);
-	knight->AddComponent(knightController);
 }
 
 void Scene::LoadTrees()
