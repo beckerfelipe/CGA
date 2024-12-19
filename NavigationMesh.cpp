@@ -96,6 +96,7 @@ void NavigationMesh::ReadGraph(std::string path)
         ss >> v.x >> v.y >> v.z;
 		v *= terrainScale;
 		v.y = terrain->GetHeight(v.x, v.z);
+
 		nodePosition[idx] = v;
 
         int num_neighbors;

@@ -34,6 +34,7 @@ public:
 	virtual void SetScale(glm::vec3 scale);
 	virtual void SetRotation(glm::vec3 rotation);
 	virtual glm::vec3 GetPosition();
+	virtual glm::vec3 GetRotation();
 };
 
 #endif	

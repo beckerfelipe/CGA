@@ -43,6 +43,7 @@ int mainLoop()
     InputManager* inputManager = new InputManager(window);
 	Scene* scene = new Scene();
 
+
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -60,7 +61,7 @@ int mainLoop()
 
 //talvez a camera esteja bugada porque estou renderizando os objetos no 0,0,0
 int main()
-{	
+{
 	mainLoop();
 	return 0;
 }

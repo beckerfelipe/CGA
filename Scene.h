@@ -14,6 +14,7 @@
 #include "CameraController.h"
 #include "NavigationMesh.h"
 #include "KnightController.h"	
+#include "Light.h"
 
 extern double PI;
 
@@ -34,6 +35,9 @@ class Scene
 	void LoadHouses();
 	void GetHousePositions(std::vector<glm::vec3>& positionsA, std::vector<glm::vec3>& positionsB, std::vector<glm::vec3>& positionsC);
 	void LoadKnight();
+	void LoadTrees();
+	void GetHousePositions(std::vector<glm::vec3>& positions);
+
 public:
 	void Render();
 	Scene();

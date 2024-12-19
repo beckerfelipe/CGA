@@ -8,6 +8,7 @@
 #include <string>
 #include "MainCamera.h"
 #include "Transform.h"
+#include "Light.h"
 
 struct Vertex
 {

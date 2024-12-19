@@ -25,8 +25,7 @@ void KnightController::ApplyMovement()
 
 	double distance = glm::distance(knightPosition, navigationMesh->nodePosition[nextNode]);
 
-	std::cout << knightPosition.x << " " << knightPosition.y << " " << knightPosition.z << "  -  " << navigationMesh->nodePosition[nextNode].x << " " << navigationMesh->nodePosition[nextNode].y << " " << navigationMesh->nodePosition[nextNode].z << std::endl;
-	if (distance <= 1)//TODO aumentar aqui ou descobrir o porque do sample height estar retornando valores diferentes
+	if (distance <= 1)
 	{
 		int aux = nextNode;
 		nextNode = navigationMesh->GetNextNode(nextNode, currentNode);
@@ -36,8 +35,21 @@ void KnightController::ApplyMovement()
 	}
 	
 	glm::vec3 direction = glm::normalize(navigationMesh->nodePosition[nextNode] - knightPosition);
-	//isso aqui pode causar problemas quando se aproxima de um no
+
 	knightPosition += direction * speed * deltaTime;
 	knightPosition.y = terrain->GetHeight(knightPosition.x, knightPosition.z);
 	knight->SetPosition(knightPosition);
+
+	glm::vec3 rotation = knight->GetRotation();
+
+	float angle = glm::acos(glm::dot(glm::vec3(0, 1, 0), direction));
+
+	glm::vec3 crossProduct = glm::cross(glm::vec3(0, 1, 0), direction);
+
+	if (crossProduct.y < 0) {
+		angle = -angle;
+	}
+
+	rotation.y = angle;
+	knight->SetRotation(rotation);
 }

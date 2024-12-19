@@ -72,6 +72,15 @@
     <ClCompile Include="KnightController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WaterEffect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Transform.h">
@@ -125,6 +134,15 @@
     <ClInclude Include="KnightController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="WaterEffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\CubeTest.vert" />
@@ -133,5 +151,9 @@
     <None Include="Shaders\ModelLoader.frag" />
     <None Include="Shaders\Terrain.frag" />
     <None Include="Shaders\Terrain.vert" />
+    <None Include="Shaders\WaterEffect.frag" />
+    <None Include="Shaders\WaterEffect.vert" />
+    <None Include="Shaders\House.frag" />
+    <None Include="Shaders\House.vert" />
   </ItemGroup>
 </Project>

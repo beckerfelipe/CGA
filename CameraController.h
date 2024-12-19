@@ -4,19 +4,24 @@
 #include "Component.h"
 #include "Camera.h"
 #include <cassert>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
 //Script that controls the camera, for now it will be a component
 class CameraController : public Component
 {
 	//The camera reference that will be used to modify the camera transform
 	Camera* camera;
 
-	float cameraSpeed = 20.0f;
-	float mouseSensitivityX = 0.05f;
-	float mouseSensitivityY = 0.05f;
+	float cameraSpeed = 50.0f;
+	float mouseSensitivityX = 10.0f;
+	float mouseSensitivityY = 5.0f;
 	float timeLastFrame = 0.0f;
 
 	float pitch = 0.0f;
-	float yaw = 0.0f;
+	float yaw = -0.0f;
+
+	glm::vec3 worldUp;
 
 	glm::vec2 lastMousePosition = glm::vec2(0.0f, 0.0f);
 
@@ -25,7 +30,6 @@ class CameraController : public Component
 
 public:
 	CameraController(Component *parent);
-	void Start();
 	void Update();
 	void Destroy();
 };

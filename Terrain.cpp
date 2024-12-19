@@ -66,9 +66,8 @@ unsigned int Terrain::ReadTexture(std::string name)
 void Terrain::LoadTexture(std::vector<Texture>& texture)
 {
 	texture.push_back({ ReadTexture("Dry_Pebbles_Grassy_[4K]_Diffuse.jpg"), "texture_diffuse", "Dry_Pebbles_Grassy_[4K]_Diffuse.jpg" });
-	texture.push_back({ ReadTexture("Dry_Pebbles_Grassy_[4K]_Specular.jpg"), "texture_specular", "Dry_Pebbles_Grassy_[4K]_Specular.jpg" });
 	texture.push_back({ ReadTexture("Dry_Pebbles_Grassy_[4K]_Normal.jpg"), "texture_normal", "Dry_Pebbles_Grassy_[4K]_Normal.jpg" });
-	
+	texture.push_back({ ReadTexture("Dry_Pebbles_Grassy_[4K]_Specular.jpg"), "texture_specular", "Dry_Pebbles_Grassy_[4K]_Specular.jpg" });
 }
 
 void Terrain::TerrainLoader(std::vector<Vertex>& vertices, std::vector<unsigned int>& indices)
@@ -98,7 +97,7 @@ void Terrain::TerrainLoader(std::vector<Vertex>& vertices, std::vector<unsigned 
 			vertexStream >> v.x >> v.y >> v.z;
 			xx = (xx<=v.z)?v.z:xx;
 			xm = (xm >= v.z) ? v.z : xm;
-			Vertex vertex = { v,glm::vec3(0,0,0), glm::vec2{float(v.x / 500),(v.z / 500)} };//melhorar o calculo do texCoords
+			Vertex vertex = { v,glm::vec3(0,0,0), glm::vec2{float(v.x),(v.z)}};
 			vertices[idx++]=vertex;
 		}
 	}
@@ -115,10 +114,23 @@ void Terrain::TerrainLoader(std::vector<Vertex>& vertices, std::vector<unsigned 
 	for (int i = 0; i < totalFaces; ++i) {
 		if (std::getline(file, line)) {
 			std::istringstream faceStream(line);
-			int index;
-			while (faceStream >> index) {
-				indices[idx++]=index;
-			}
+			int a,b,c;
+			faceStream >> a>>b>>c;
+			indices[idx]=a;
+			indices[idx + 1] = b;
+			indices[idx + 2] = c;
+			idx += 3;
+
+			glm::vec3 v1 = vertices[b].position - vertices[a].position;
+			glm::vec3 v2 = vertices[c].position - vertices[a].position;
+
+			glm::vec3 normal = glm::cross(v1, v2);
+
+			normal = glm::normalize(normal);
+
+			vertices[a].normal = normal;
+			vertices[b].normal = normal;
+			vertices[c].normal = normal;
 		}
 	}
     
@@ -137,7 +149,9 @@ bool Terrain::InsideTriangle(glm::vec3 a, glm::vec3 b, glm::vec3 c, glm::vec3 p)
 	float v = ((c.z - a.z) * (p.x - c.x) + (a.x - c.x) * (p.z - c.z)) / denominator;
 	float w = 1.0f - u - v;
 
-	return (u >= 0.0f && v >= 0.0f && w >= 0.0f);
+	const float epsilon = 1e-6f;
+	return (u >= -epsilon && v >= -epsilon && w >= -epsilon);
+
 }
 
 float Terrain::GetHeight(float x, float z)

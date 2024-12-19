@@ -65,6 +65,11 @@ glm::vec3 Component::GetPosition()
 	return transform.position;
 }
 
+glm::vec3 Component::GetRotation()
+{
+	return transform.rotation;
+}
+
 void Component::SetPosition(glm::vec3 position)
 {
 	transform.position = position;

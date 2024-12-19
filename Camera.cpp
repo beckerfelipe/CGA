@@ -12,6 +12,9 @@ Camera::Camera(ProjectionType projectionType, float fieldOfView, float aspectRat
 	this->viewMatrix = glm::mat4(1.0f);
 	this->projectionMatrix = glm::mat4(1.0f);
 	this->projectionViewMatrix = glm::mat4(1.0f);
+	forward = glm::vec3(0.0f, 0.0f, -1.0f);
+	right = glm::vec3(1.0f, 0.0f, 0.0f);
+	up = glm::vec3(0.0f, 1.0f, 0.0f);
 	UpdateProjectionMatrix();
 }
 
@@ -22,16 +25,8 @@ void Camera::AddComponent(Component* component)
 }
 
 void Camera::UpdateViewMatrix()
-{	
-	Quaternion forward = Quaternion(transform.rotation.x, glm::vec3(1, 0, 0));
-	Quaternion up = Quaternion(transform.rotation.y, glm::vec3(0, 1, 0));
-	Quaternion right = Quaternion(transform.rotation.z, glm::vec3(0, 0, 1));
-
-	Quaternion rotation = forward * up * right;
-
-	//In viewMatrix translation comes first
-	viewMatrix = rotation.ToMatrix() * glm::translate(glm::mat4(1.0f), -transform.position);
-
+{
+	viewMatrix = glm::lookAt(transform.position, transform.position + forward, worldUp);
 }
 
 void Camera::UpdateProjectionMatrix()
@@ -52,7 +47,6 @@ void Camera::Update()
 	{
 		components[i]->Update();
 	}
-	transform.Update();
 	UpdateViewMatrix();
 	UpdateProjectionViewMatrix();
 }
